@@ -44,29 +44,27 @@ Service centers — banks, hospitals, railway stations, college offices — rout
 ## 🏗️ Project Structure
 
 ```
-queueiq-ai-queue-predictor/
+queue-predictor/
 │
-└── queue-predictor/                ← Main application package
-    │
-    ├── app.py                      ← Streamlit dashboard entry point (all 3 modes)
-    ├── config.py                   ← ⚙️  Central config — ALL thresholds & tuning knobs here
-    │
-    ├── simulator.py                ← Poisson-based queue counter simulation engine
-    ├── queue_math.py               ← M/M/1 queueing theory (ρ, Lq, Wq formulas)
-    ├── predictor.py                ← Linear regression multi-horizon forecasting
-    ├── recommender.py              ← Action recommendation engine (open/redirect/speed-up)
-    ├── groq_alerts.py              ← Groq API → LLaMA-3.3-70B alert generation
-    ├── cv_detector.py              ← YOLOv8n person detection (image / video / webcam)
-    ├── risk_engine.py              ← Risk classifier: per-counter + facility aggregation
-    ├── what_if.py                  ← What-if scenario simulation engine
-    │
-    ├── tests/
-    │   └── test_all.py             ← pytest suite: math, predictions, risk, scenarios
-    │
-    ├── requirements.txt            ← Python dependencies
-    ├── .env.example                ← Environment variable template
-    ├── .gitignore
-    └── README.md
+├── app.py                      ← Streamlit dashboard entry point (all 3 modes)
+├── config.py                   ← ⚙️  Central config — ALL thresholds & tuning knobs here
+│
+├── simulator.py                ← Poisson-based queue counter simulation engine
+├── queue_math.py               ← M/M/1 queueing theory (ρ, Lq, Wq formulas)
+├── predictor.py                ← Linear regression multi-horizon forecasting
+├── recommender.py              ← Action recommendation engine (open/redirect/speed-up)
+├── groq_alerts.py              ← Groq API → LLaMA-3.3-70B alert generation
+├── cv_detector.py              ← YOLOv8n person detection (image / video / webcam)
+├── risk_engine.py              ← Risk classifier: per-counter + facility aggregation
+├── what_if.py                  ← What-if scenario simulation engine
+│
+├── tests/
+│   └── test_all.py             ← pytest suite: math, predictions, risk, scenarios
+│
+├── requirements.txt            ← Python dependencies
+├── .env.example                ← Environment variable template
+├── .gitignore
+└── README.md
 ```
 
 ### ⚙️ Data Flow
@@ -208,7 +206,7 @@ timestamp,counter_name,people_count
 |---|---|---|
 | `timestamp` | `datetime` | Any pandas-parseable format (`YYYY-MM-DD HH:MM:SS`) |
 | `counter_name` | `str` | Unique name per service window |
-| `people_count` | `int ≥ 0` | Snapshot headcount at that moment |
+| `people_count` | `int >= 0` | Snapshot headcount at that moment |
 
 ---
 
@@ -238,7 +236,7 @@ python tests/test_all.py
 
 ## ⚙️ Configuration Reference
 
-All system thresholds live in [`config.py`](queue-predictor/config.py). Edit this file to tune QueueIQ to your venue **without touching any business logic**:
+All system thresholds live in `config.py`. Edit this file to tune QueueIQ to your venue **without touching any business logic**:
 
 ```python
 # ── Queue thresholds (people count) ─────────────────────────
@@ -253,7 +251,7 @@ WAIT_MEDIUM   = 15
 WAIT_HIGH     = 25
 WAIT_CRITICAL = 40
 
-# ── Server utilisation ρ = λ/μ ───────────────────────────────
+# ── Server utilisation rho = lambda/mu ──────────────────────
 UTILIZATION_HIGH     = 0.85   # System stressed
 UTILIZATION_CRITICAL = 0.95   # Near-saturation
 
@@ -299,8 +297,6 @@ Contributions, issues, and feature requests are welcome!
    git push origin feature/amazing-feature
    ```
 5. Open a **Pull Request**
-
-Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
 
 ---
 

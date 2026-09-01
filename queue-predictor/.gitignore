@@ -1,0 +1,60 @@
+# ── Secrets — NEVER commit these ────────────────────────────────────────────
+.env
+*.env
+.streamlit/secrets.toml
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+
+# ── Virtual environments ─────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── YOLO model weights (large — auto-downloaded on first run) ────────────────
+*.pt
+*.onnx
+*.bin
+
+# ── Large binaries ───────────────────────────────────────────────────────────
+*.zip
+ngrok*
+
+# ── Streamlit local cache / config ──────────────────────────────────────────
+.streamlit/
+
+# ── OS artefacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ── IDE / editors ────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Scratch / one-off dev scripts (underscore prefix convention) ─────────────
+_*.py
+_*.txt
+full_audit.py
+verify_e2e.py
+app_clean.py
+cf_output.txt
+
+# ── Pytest / coverage ────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
