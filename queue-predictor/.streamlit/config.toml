@@ -1,0 +1,12 @@
+[server]
+headless = true
+enableCORS = true
+enableXsrfProtection = true
+
+[runner]
+fastReruns = true
+enumCoercion = "nameOnly"
+
+[theme]
+base = "dark"
+font = "sans serif"

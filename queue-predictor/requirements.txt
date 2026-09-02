@@ -1,21 +1,31 @@
-# QueueIQ — Python dependencies
+# QueueIQ — Production Dependencies
+# ─────────────────────────────────────────────────────────────────────────────
 # Install: pip install -r requirements.txt
+#
+# Deployment targets:
+#   • Streamlit Community Cloud (primary)
+#   • Railway / Render / Fly.io / Docker (alternatives)
+#
+# Note: ultralytics (YOLOv8) is OPTIONAL — the app degrades gracefully if
+# unavailable (camera mode disabled, simulation/upload modes unaffected).
+# Comment it out if deploying to environments with limited disk/memory.
+# ─────────────────────────────────────────────────────────────────────────────
 
-# Core framework
+# ── Core framework ────────────────────────────────────────────────────────────
 streamlit>=1.35.0
 
-# Data science
+# ── Data science ──────────────────────────────────────────────────────────────
 numpy>=1.26.0
 pandas>=2.0.0
 scikit-learn>=1.4.0
 
-# AI / LLM alerts
+# ── AI / LLM alerts (graceful fallback if key not set) ───────────────────────
 groq>=0.9.0
 python-dotenv>=1.0.0
 
-# Computer vision (YOLO person detection)
+# ── Computer vision — OPTIONAL (YOLOv8 person detection) ─────────────────────
+# Remove or comment out if deploying to memory-constrained environments.
+# The app automatically falls back to Simulation Mode if YOLO is unavailable.
 ultralytics>=8.0.0
 opencv-python-headless>=4.9.0
-
-# Visualization (optional, used by CV module)
 Pillow>=10.0.0

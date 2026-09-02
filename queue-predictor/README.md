@@ -1,321 +1,574 @@
-<div align="center">
+# QueueIQ
 
-<h1>📊 QueueIQ — AI-Powered Queue Predictor</h1>
+**Queue Intelligence Platform** — Real-time AI-powered queue monitoring, forecasting, and operational intelligence for enterprise service environments.
 
-<p><strong>Real-time crowd intelligence · Predictive analytics · Smart staffing decisions</strong></p>
-
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.35%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
-[![YOLOv8](https://img.shields.io/badge/YOLOv8n-Person%20Detection-0052CC?style=for-the-badge&logoColor=white)](https://ultralytics.com)
-[![Groq](https://img.shields.io/badge/Groq-LLaMA%203.3%2070B-F55036?style=for-the-badge)](https://console.groq.com)
-[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML%20Forecasting-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
-
-> **QueueIQ** is an intelligent queue management dashboard that predicts crowd build-up, classifies congestion risk, and recommends staffing actions — in real time — using computer vision, queueing theory, and a large language model.
-
-</div>
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.35%2B-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![YOLOv8](https://img.shields.io/badge/YOLOv8-Person%20Detection-00DBDE?style=flat-square)](https://ultralytics.com)
+[![Groq](https://img.shields.io/badge/Groq-LLaMA%203.3%2070B-F54D27?style=flat-square)](https://groq.com)
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
 
 ---
 
-## 🧠 What Problem Does It Solve?
+## Table of Contents
 
-Service centers — banks, hospitals, railway stations, college offices — routinely suffer from reactive queue management: staff only act *after* lines explode. **QueueIQ flips this.** It ingests live or simulated counter data, predicts where queues are heading over the next 5–20 minutes, and surfaces AI-generated alerts *before* the situation becomes critical.
+- [Product Vision](#product-vision)
+- [Core Features](#core-features)
+- [Architecture](#architecture)
+- [Data Flow](#data-flow)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Local Development](#local-development)
+- [Operating Modes](#operating-modes)
+- [Simulation](#simulation)
+- [Data Upload](#data-upload)
+- [Camera / Vision](#camera--vision)
+- [Forecasting](#forecasting)
+- [AI Alerts](#ai-alerts)
+- [UI/UX Principles](#uiux-principles)
+- [Light and Dark Mode](#light-and-dark-mode)
+- [Production Deployment](#production-deployment)
+- [Security](#security)
+- [Accessibility](#accessibility)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## ✨ Key Features
+## Product Vision
 
-| # | Feature | Detail |
-|---|---|---|
-| 1 | 🔁 **Simulation Mode** | Poisson-process queue simulation across 4 real-world presets — Bank, Hospital, College Office, Railway Station |
-| 2 | 📂 **CSV Upload Mode** | Upload historical counter data (`timestamp, counter_name, people_count`) for full AI analysis |
-| 3 | 📹 **AI CCTV Analysis** | Drag-and-drop images or video — YOLOv8n auto-detects and counts every person in frame |
-| 4 | 📸 **Live Camera Scan** | Real-time webcam capture with instant headcount |
-| 5 | 🧠 **Multi-Horizon Forecasting** | Linear regression predicts queue size at 5, 10, 15, and 20 minutes ahead |
-| 6 | ⚠️ **4-Level Risk Engine** | Per-counter & facility-level risk scoring: **Low → Medium → High → Critical** |
-| 7 | 🚨 **Groq LLM Alerts** | LLaMA-3.3-70B generates one-sentence natural-language alerts for operations managers |
-| 8 | 🔀 **What-If Scenarios** | Simulate *"What if I open a new counter?"*, *"What if I redirect 40% of customers?"*, or *"What if I speed up service?"* |
-| 9 | 📊 **M/M/1 Queue Theory** | Full queueing-theory wait-time calculation (ρ = λ/μ, Lq, Wq) alongside empirical estimates |
-| 10 | 📤 **CSV Export** | Download any detected or simulated dataset for offline audit |
-| 11 | 🌙 **Dark / ☀️ Light Mode** | One-click theme toggle in sidebar |
+QueueIQ answers five operational questions within seconds:
+
+| # | Question | Answer Source |
+|---|----------|--------------|
+| 1 | What is happening now? | Live counter readings |
+| 2 | Is there a problem? | Risk classifier |
+| 3 | What will happen next? | Linear regression forecast |
+| 4 | Why? | Arrival vs. service rate analysis |
+| 5 | What should I do? | Recommendation engine |
+
+Designed for **banking counters**, **government service centers**, **airports**, **hospitals**, and **retail service environments** where queue management directly impacts customer experience and operational efficiency.
 
 ---
 
-## 🏗️ Project Structure
+## Core Features
+
+| Feature | Description |
+|---------|-------------|
+| **Simulation** | Poisson-based multi-counter queue simulation with demographic presets |
+| **CSV Upload** | Import historical or live queue data for instant AI analysis |
+| **Camera / Vision** | YOLOv8n person detection on uploaded images and video footage |
+| **Live Camera** | Real-time webcam capture with AI people counting and CSV export |
+| **AI Forecasting** | Linear regression with multi-horizon predictions (+5/+10/+15/+20 min) |
+| **Risk Classification** | Per-counter and facility-level risk scoring (Normal → Critical) |
+| **Recommendations** | Actionable guidance: redirect, open counter, increase service rate |
+| **Groq LLM Alerts** | Natural language operational alerts via llama-3.3-70b-versatile |
+| **M/M/1 Queuing** | Theoretical wait-time estimation using queuing theory |
+| **What-If Simulator** | Model impact of interventions before acting |
+| **Dark / Light Mode** | Independently designed, semantically tokenized themes |
+
+---
+
+## Architecture
+
+```mermaid
+graph TD
+    A[app.py<br/>Streamlit Controller] --> B[Simulation Engine<br/>simulator.py]
+    A --> C[CSV Parser<br/>parse_csv_raw]
+    A --> D[Camera Detector<br/>cv_detector.py]
+    B --> E[Queue State]
+    C --> E
+    D --> E
+    E --> F[predictor.py<br/>Linear Regression]
+    E --> G[queue_math.py<br/>Wait Time Estimation]
+    E --> H[risk_engine.py<br/>Risk Classification]
+    F --> I[recommender.py<br/>Action Recommendation]
+    G --> I
+    H --> I
+    I --> J[groq_alerts.py<br/>LLM Narrative Alert]
+    I --> K[what_if.py<br/>What-If Scenarios]
+    F --> L[Dashboard Render<br/>render_full_dashboard]
+    G --> L
+    H --> L
+    I --> L
+    J --> L
+    K --> L
+```
+
+### Single-File Controller Pattern
+
+`app.py` is the single application controller. It:
+1. Manages all Streamlit session state
+2. Routes between three data modes
+3. Calls business logic modules
+4. Renders the UI through pure functions
+
+Business logic is isolated in independent modules with no Streamlit imports — they are independently testable.
+
+---
+
+## Data Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App as app.py
+    participant Engine as Business Logic
+    participant Groq as Groq API
+
+    User->>App: Load scenario / upload CSV / capture image
+    App->>Engine: Generate queue readings
+    Engine->>Engine: estimate_wait_time()
+    Engine->>Engine: predict_future_count()
+    Engine->>Engine: classify_risk()
+    Engine->>Engine: recommend_action()
+    Engine->>Groq: generate_alert() [async, 8s timeout]
+    Groq-->>Engine: LLM narrative (or template fallback)
+    Engine->>App: Return structured results
+    App->>User: Render dashboard
+```
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| Framework | Streamlit 1.35+ | Web application server |
+| Language | Python 3.11+ | Application runtime |
+| ML — Vision | YOLOv8n (ultralytics) | Person detection |
+| ML — Forecast | scikit-learn LinearRegression | Queue count prediction |
+| LLM | Groq (llama-3.3-70b-versatile) | Natural language alerts |
+| Data | pandas, numpy | Data processing |
+| Charts | Altair (Vega-Lite) | Theme-aware visualizations |
+| Styling | Semantic CSS tokens | Design system |
+| Typography | Inter + JetBrains Mono | UI + data fonts |
+| Deployment | Streamlit Community Cloud | Primary target |
+| Container | Docker | Railway / Render / Fly.io |
+
+---
+
+## Project Structure
 
 ```
 queue-predictor/
+├── app.py                  # Main application controller (1,985 lines)
+├── simulator.py            # Poisson queue simulation engine
+├── predictor.py            # Linear regression forecaster
+├── recommender.py          # Action recommendation engine
+├── risk_engine.py          # Risk classification (Normal → Critical)
+├── queue_math.py           # Wait time + M/M/1 queueing theory
+├── groq_alerts.py          # Groq LLM alert generation with fallback
+├── what_if.py              # What-if scenario calculator
+├── cv_detector.py          # YOLOv8 person detection pipeline
+├── config.py               # Application constants
 │
-├── app.py                      ← Streamlit dashboard entry point (all 3 modes)
-├── config.py                   ← ⚙️  Central config — ALL thresholds & tuning knobs here
+├── requirements.txt        # Python dependencies
+├── Dockerfile              # Container deployment
+├── .dockerignore           # Docker build exclusions
+├── .env.example            # Environment variable template
+├── .gitignore              # Git exclusions (secrets never committed)
+├── README.md               # This file
 │
-├── simulator.py                ← Poisson-based queue counter simulation engine
-├── queue_math.py               ← M/M/1 queueing theory (ρ, Lq, Wq formulas)
-├── predictor.py                ← Linear regression multi-horizon forecasting
-├── recommender.py              ← Action recommendation engine (open/redirect/speed-up)
-├── groq_alerts.py              ← Groq API → LLaMA-3.3-70B alert generation
-├── cv_detector.py              ← YOLOv8n person detection (image / video / webcam)
-├── risk_engine.py              ← Risk classifier: per-counter + facility aggregation
-├── what_if.py                  ← What-if scenario simulation engine
+├── .streamlit/
+│   ├── config.toml         # Streamlit server configuration (committed)
+│   ├── secrets.toml        # Local secrets (gitignored — never commit)
+│   └── secrets.toml.example  # Secrets template
 │
-├── tests/
-│   └── test_all.py             ← pytest suite: math, predictions, risk, scenarios
-│
-├── requirements.txt            ← Python dependencies
-├── .env.example                ← Environment variable template
-├── .gitignore
-└── README.md
-```
-
-### ⚙️ Data Flow
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│              DATA SOURCES (choose one per session)          │
-│   📹 Camera/Video Feed  │  📂 CSV Upload  │  🔁 Simulation  │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ people_count per counter per tick
-                       ▼
-         ┌─────────────────────────────┐
-         │       queue_math.py         │  M/M/1 wait time (Wq = λ/μ(μ−λ))
-         │       predictor.py          │  5/10/15/20 min linear forecasts
-         │       risk_engine.py        │  LOW | MEDIUM | HIGH | CRITICAL
-         │       recommender.py        │  "Open Counter 3" / "Redirect..."
-         │       groq_alerts.py        │  LLM one-sentence alert narrative
-         └─────────────────────────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │    app.py       │  Streamlit real-time dashboard
-              └─────────────────┘
+└── tests/
+    └── ...                 # Test suite
 ```
 
 ---
 
-## 📦 Tech Stack
-
-| Layer | Technology | Purpose |
-|---|---|---|
-| **UI / Dashboard** | [Streamlit 1.35+](https://streamlit.io) | Interactive web app, no front-end code needed |
-| **Computer Vision** | [YOLOv8n](https://ultralytics.com) + [OpenCV](https://opencv.org) | Real-time person detection in images & video |
-| **LLM Alerts** | [Groq API](https://groq.com) · LLaMA-3.3-70B | Natural-language alert generation (< 150 tokens) |
-| **ML Forecasting** | [scikit-learn](https://scikit-learn.org) | Linear regression for queue length prediction |
-| **Queue Theory** | Custom (`queue_math.py`) | M/M/1 formulas: ρ, Lq, Wq |
-| **Data Processing** | [pandas](https://pandas.pydata.org) · [NumPy](https://numpy.org) | Data wrangling, rolling windows |
-| **Image Handling** | [Pillow](https://pillow.readthedocs.io) | Frame extraction and preprocessing |
-| **Testing** | [pytest](https://pytest.org) | Automated unit & integration tests |
-| **Env Config** | [python-dotenv](https://pypi.org/project/python-dotenv/) | Secure API key loading |
-
----
-
-## 🚀 Installation & Setup
+## Installation
 
 ### Prerequisites
 
-- **Python 3.10+** installed
-- A free **Groq API key** → [console.groq.com/keys](https://console.groq.com/keys)
+- Python 3.11 or later
+- pip
 
----
-
-### Step 1 — Clone the repository
+### Steps
 
 ```bash
-git clone https://github.com/bipinmaurya5567-bit/queueiq-ai-queue-predictor.git
-cd queueiq-ai-queue-predictor/queue-predictor
-```
+# 1. Clone the repository
+git clone https://github.com/YOUR_USERNAME/queueiq.git
+cd queueiq/queue-predictor
 
----
+# 2. Create and activate a virtual environment
+python -m venv .venv
 
-### Step 2 — Create & activate a virtual environment
-
-```bash
-# Create
-python -m venv venv
-
-# Activate (Windows PowerShell)
-venv\Scripts\activate
-
-# Activate (macOS / Linux)
-source venv/bin/activate
-```
-
----
-
-### Step 3 — Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-> **Note:** YOLOv8n model weights (`yolov8n.pt`, ~6 MB) are downloaded automatically by Ultralytics on first use. No manual download required.
-
----
-
-### Step 4 — Configure your API key
-
-```bash
 # Windows
-copy .env.example .env
+.venv\Scripts\activate
 
 # macOS / Linux
+source .venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Configure environment variables
 cp .env.example .env
+# Edit .env — add your GROQ_API_KEY (optional)
+
+# 5. Start the application
+python -m streamlit run app.py
 ```
 
-Open `.env` and replace the placeholder:
-
-```env
-# .env
-GROQ_API_KEY=gsk_your_actual_key_here
-```
-
-Get your free key at **[console.groq.com/keys](https://console.groq.com/keys)** — no credit card required.
+Open **http://localhost:8501** — Password: `queueiq2024`
 
 ---
 
-## ▶️ How to Run the App
+## Environment Variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `GROQ_API_KEY` | Optional | — | Groq LLM key for AI narrative alerts. If absent, the app generates template-based alerts automatically. Get a free key at [console.groq.com](https://console.groq.com/keys). |
+
+> **Security**: `GROQ_API_KEY` is a **server-side secret**. Never expose it in client-side code or commit it to Git.
+
+See [`.env.example`](.env.example) for the complete template.
+
+---
+
+## Local Development
 
 ```bash
-streamlit run app.py
-```
+# Run in development mode (hot-reload enabled by default in Streamlit)
+python -m streamlit run app.py
 
-Then open **[http://localhost:8501](http://localhost:8501)** in your browser.
+# Check syntax
+python -c "import ast; ast.parse(open('app.py', encoding='utf-8').read()); print('Syntax OK')"
 
-You will see three operating modes in the sidebar:
+# Test Groq integration
+python groq_alerts.py
 
-| Mode | When to use |
-|---|---|
-| 🔁 **Simulation** | Demo / testing — no data or camera needed |
-| 📂 **Upload Real Data** | You have historical CSV exports from your counters |
-| 📹 **AI CCTV Analysis** | You have images, video clips, or a live webcam feed |
-
----
-
-## 📋 CSV Format Reference
-
-When using **Upload Real Data** mode, your CSV must contain these columns:
-
-```csv
-timestamp,counter_name,people_count
-2024-01-15 09:00:00,Counter 1 (Savings),12
-2024-01-15 09:00:00,Counter 2 (Current),7
-2024-01-15 09:05:00,Counter 1 (Savings),16
-2024-01-15 09:05:00,Counter 2 (Current),4
-```
-
-| Column | Type | Notes |
-|---|---|---|
-| `timestamp` | `datetime` | Any pandas-parseable format (`YYYY-MM-DD HH:MM:SS`) |
-| `counter_name` | `str` | Unique name per service window |
-| `people_count` | `int >= 0` | Snapshot headcount at that moment |
-
----
-
-## 🧪 Running Tests
-
-```bash
-# From inside queue-predictor/
+# Run tests
 python -m pytest tests/ -v
 ```
 
-Or run directly (no pytest needed):
+---
 
-```bash
-python tests/test_all.py
-```
+## Operating Modes
 
-**Test coverage includes:**
+QueueIQ has three data modes, all rendering through the same dashboard pipeline:
 
-- ✅ M/M/1 queue wait time calculations (stable & unstable systems)
-- ✅ Multi-horizon prediction pipeline
-- ✅ Risk classification — per-counter and facility-level aggregation
-- ✅ Recommendation engine logic (open counter, redirect, speed-up)
-- ✅ What-if scenario arithmetic
-- ✅ Edge cases — zero queue, missing data, division guards
+### Mode Selection
+
+Select the data source from the **sidebar** under **Data Source**:
+
+| Mode | Sidebar Label | Data Source |
+|------|--------------|-------------|
+| Simulation | 🔁 Simulation | Real-time Poisson generator |
+| Upload CSV | 📂 Upload CSV | Historical CSV file |
+| Camera / Vision | 📹 Camera / Vision | YOLOv8 image/video analysis |
 
 ---
 
-## ⚙️ Configuration Reference
+## Simulation
 
-All system thresholds live in `config.py`. Edit this file to tune QueueIQ to your venue **without touching any business logic**:
+The simulation engine uses a **Poisson process** to model realistic queue behavior:
+
+- Configurable arrival rate (customers/minute)
+- Per-counter service rates
+- Location presets: Bank, Airport, Hospital, Retail
+- 1–6 counters
+- Configurable tick speed (1–10 seconds per step)
+
+**Demo scenarios:**
+
+| Scenario | Description |
+|----------|-------------|
+| Normal (low traffic) | Steady low-load baseline |
+| Rush Hour | All counters under significant load |
+| Sudden Surge | One counter overwhelmed, others idle |
+| Counter Failure | Reduced counter count, high load |
+| All Clear | All counters at minimal load |
+
+**Controls** in the sidebar:
+- **Queue Setup**: location preset + counter count
+- **Scenarios**: pre-built load scenarios
+- **Playback**: step-by-step or auto-play at configurable speed
+- **Prediction Settings**: forecast horizon + alert threshold
+
+---
+
+## Data Upload
+
+Upload operational queue data as a CSV file.
+
+### Required CSV Format
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `timestamp` | datetime | Reading timestamp (any parseable format) |
+| `counter_name` | string | Counter identifier (e.g. "Counter 1 (Main)") |
+| `people_count` | integer | Number of people in queue at this timestamp |
+
+### Example
+
+```csv
+timestamp,counter_name,people_count
+2024-01-15 09:00:00,Counter 1 (Main),12
+2024-01-15 09:00:00,Counter 2 (Express),4
+2024-01-15 09:05:00,Counter 1 (Main),15
+2024-01-15 09:05:00,Counter 2 (Express),3
+```
+
+A **sample CSV** (3 counters × 49 readings) is available in the sidebar as a download.
+
+---
+
+## Camera / Vision
+
+The camera module uses **YOLOv8n** (nano model, ~6 MB) for person detection.
+
+> **YOLOv8 is optional.** If unavailable, the app gracefully falls back to Simulation Mode.
+
+### Footage Upload
+
+1. Upload one file per counter (JPEG, PNG, MP4, AVI, MOV)
+2. Name each counter
+3. AI detects and counts people in each file
+4. Results feed the full analysis pipeline
+
+### Live Camera
+
+1. Point your camera at a queue
+2. Click **Take Photo**
+3. Click **Detect & Record**
+4. AI counts people and records the timestamp
+5. Build a time-series by capturing multiple frames
+6. Export as CSV for full analysis
+
+### Notes
+
+- CCTV mode processes **uploaded footage** — it is not a live stream processor
+- Live camera uses the browser's `getUserMedia` API (HTTPS required in production)
+- YOLOv8n weights (~6 MB) are auto-downloaded on first use
+
+---
+
+## Forecasting
+
+QueueIQ generates forecasts using **linear regression** over recent readings.
+
+### Single-Horizon Forecast
+
+Predicts the queue count at a configurable horizon (5–60 minutes ahead).
+
+### Multi-Horizon Forecast
+
+Predicts at four fixed horizons simultaneously: **+5m / +10m / +15m / +20m**
+
+Each prediction includes:
+- Point estimate
+- Confidence interval [low–high]
+- Trend slope (people/minute)
+- Forecast method (regression / extrapolation / fallback)
+
+Minimum readings required before forecasting: **5 per counter** (configurable in `config.py`).
+
+---
+
+## AI Alerts
+
+QueueIQ generates natural language operational alerts using **Groq's LLaMA 3.3 70B** model.
+
+### Alert Generation Pipeline
+
+```
+Counter readings + predictions + recommendation
+        ↓
+Compact system-state prompt
+        ↓
+Groq API (llama-3.3-70b-versatile, max 80 tokens)
+        ↓
+One-sentence operational alert for the manager
+```
+
+### Offline Fallback
+
+If the Groq API is unavailable (no key, network error, timeout), the system falls back to a **deterministic template-based alert** — the application never breaks.
 
 ```python
-# ── Queue thresholds (people count) ─────────────────────────
-THRESHOLD_LOW      = 10    # Normal operation
-THRESHOLD_MEDIUM   = 20    # Building up — monitor
-THRESHOLD_HIGH     = 30    # Alert threshold (also configurable via UI)
-THRESHOLD_CRITICAL = 45    # Override — always triggers Critical
-
-# ── Wait time thresholds (minutes) ──────────────────────────
-WAIT_LOW      =  8
-WAIT_MEDIUM   = 15
-WAIT_HIGH     = 25
-WAIT_CRITICAL = 40
-
-# ── Server utilisation rho = lambda/mu ──────────────────────
-UTILIZATION_HIGH     = 0.85   # System stressed
-UTILIZATION_CRITICAL = 0.95   # Near-saturation
-
-# ── Forecast horizons ────────────────────────────────────────
-FORECAST_HORIZONS = [5, 10, 15, 20]   # minutes ahead
-
-# ── Groq LLM ────────────────────────────────────────────────
-GROQ_MODEL       = "llama-3.3-70b-versatile"
-GROQ_MAX_TOKENS  = 150
-GROQ_TIMEOUT_SEC = 6
+# From groq_alerts.py — fallback example:
+"[Auto-alert] Counter 3 (Loans) currently has 21 people
+ and is projected to reach 40 in 20 minutes — redirect
+ customers to a less busy counter."
 ```
 
 ---
 
-## 🗺️ Roadmap
+## UI/UX Principles
 
-- [ ] 🔌 REST API layer — expose predictions for external dashboards
-- [ ] 🐳 Docker + `docker-compose` one-command deployment
-- [ ] 📈 Historical trend charts (day-over-day, week-over-week)
-- [ ] 📍 Multi-branch / multi-location support
-- [ ] 📱 SMS / email / WhatsApp alerts via Twilio
-- [ ] 🔄 WebSocket live counter updates (no manual page refresh)
-- [ ] 🗃️ Database persistence (SQLite / PostgreSQL) for audit history
-- [ ] ☁️ Streamlit Cloud one-click deploy button
+QueueIQ is designed as a **modern intelligent operations control center**, not a marketing dashboard.
 
----
+### Information Hierarchy
 
-## 🤝 Contributing
+Every page follows a consistent structure:
 
-Contributions, issues, and feature requests are welcome!
+```
+Page Header (where am I, what mode, current time)
+        ↓
+Status Bar (facility health at a glance)
+        ↓
+Operational Intelligence (4 questions answered)
+        ↓
+Counter Cards (per-counter detail)
+        ↓
+Forecast Chart (trend visualization)
+        ↓
+Action Intelligence (recommendation + AI alert)
+        ↓
+Detailed Analysis (expandable — M/M/1, What-If, Multi-Horizon)
+```
 
-1. **Fork** the repository
-2. Create your feature branch:
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "feat: add amazing feature"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-5. Open a **Pull Request**
+### Design System
 
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+- **Color tokens**: All surfaces and text use semantic CSS variables — no hardcoded hex values
+- **Typography**: Inter (UI text) + JetBrains Mono (data/metrics) from Google Fonts
+- **Spacing**: 4·8·12·16·20·24·32·40·48·64px scale
+- **Border radius**: 3/5/7/10px — restrained, not giant rounded rectangles
+- **Elevation**: Flat by default, subtle shadow on raised surfaces only
+- **Icons**: Minimal Unicode symbols — no emoji in operational UI
 
 ---
 
-## 👤 Author
+## Light and Dark Mode
 
-**Bipin Maurya**
+Both themes are **independently designed** and use a shared semantic token system:
 
-[![GitHub](https://img.shields.io/badge/GitHub-bipinmaurya5567--bit-181717?style=flat-square&logo=github)](https://github.com/bipinmaurya5567-bit)
+```css
+/* Shared token names — values differ per theme */
+--bg-base         --surface          --text-primary
+--bg-secondary    --surface-raised   --text-secondary
+--border          --accent           --success
+--border-strong   --accent-muted     --warning / --danger
+```
+
+### Theme Architecture
+
+- `inject_theme(theme)` swaps all `:root` token values at runtime
+- Charts (Altair/Vega-Lite) receive per-render color configuration via `_chart_tc(theme)`
+- **Sidebar stays dark in light mode** — intentional contrast anchor (Linear/Vercel pattern)
+- No component has hardcoded colors — all consume `var(--token)`
+
+Toggle between themes using the ☀️/🌙 button in the sidebar header.
+
+---
+
+## Production Deployment
+
+### ⭐ Streamlit Community Cloud (Primary — Free)
+
+> **Note on Vercel**: Streamlit requires a persistent ASGI server. Vercel's serverless architecture does not support this. Use Streamlit Community Cloud, Railway, or Docker-based hosts instead.
+
+```bash
+# 1. Push to GitHub
+git init && git add . && git commit -m "QueueIQ production release"
+git remote add origin https://github.com/YOUR_USERNAME/queueiq
+git push -u origin main
+
+# 2. Deploy
+# Go to https://share.streamlit.io
+# New app → select repo → Main file: queue-predictor/app.py
+# Advanced settings → Secrets → paste:
+#   GROQ_API_KEY = "your_key_here"
+# Click Deploy
+```
+
+Live in ~2 minutes at `https://your-app.streamlit.app`
+
+### Railway
+
+```bash
+# Connect GitHub repo at railway.app
+# Set environment variable: GROQ_API_KEY=your_key
+# Deploy — Railway auto-detects Python
+```
+
+### Docker (Render / Fly.io / Google Cloud Run)
+
+```bash
+docker build -t queueiq .
+docker run -p 8501:8501 -e GROQ_API_KEY=your_key queueiq
+```
+
+Open http://localhost:8501
+
+---
+
+## Security
+
+| Concern | Implementation |
+|---------|---------------|
+| API key storage | `.env` (local) or Streamlit Secrets (cloud) — never in code |
+| Git exclusions | `.env`, `secrets.toml`, `*.pt` weights in `.gitignore` |
+| XSRF protection | Enabled in `.streamlit/config.toml` |
+| Auth gate | Session-based password check before any UI renders |
+| No client-side secrets | Groq API called server-side only via `groq_alerts.py` |
+| Key rotation | Rotate at [console.groq.com/keys](https://console.groq.com/keys) if exposed |
+
+**Never commit:**
+- `.env`
+- `.streamlit/secrets.toml`
+- `*.pt` model weights (auto-downloaded at runtime)
+
+---
+
+## Accessibility
+
+- Semantic HTML structure throughout
+- Keyboard-navigable sidebar and controls
+- Color is never the **only** indicator of state (badges include text labels)
+- Sufficient contrast in both dark and light themes (WCAG AA target)
+- `prefers-reduced-motion` media query disables animations system-wide
+- All form inputs have explicit labels
+- ARIA attributes on interactive custom components
+
+---
+
+## Roadmap
+
+| Priority | Feature |
+|----------|---------|
+| High | Real-time WebSocket counter integration |
+| High | PostgreSQL persistence for historical data |
+| High | Multi-facility workspace support |
+| Medium | RTSP/IP camera stream support |
+| Medium | Alert notification delivery (email, Slack, webhook) |
+| Medium | Shift scheduling recommendations |
+| Medium | Custom threshold rules per counter |
+| Low | Mobile-optimized PWA experience |
+| Low | Role-based access (admin / operator / viewer) |
+| Low | Audit log |
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/your-feature`
+3. Follow the existing code conventions in `app.py` (pure render functions, no logic in render layer)
+4. Add tests for any business logic changes in `tests/`
+5. Ensure both light and dark themes work visually
+6. Submit a pull request with a clear description
+
+Business logic modules (`predictor.py`, `recommender.py`, `risk_engine.py`, etc.) have no Streamlit imports — keep it that way for testability.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.
 
 ---
 
 <div align="center">
-
-**⭐ If this project helped you, please give it a star — it means a lot!**
-
+  <strong>QueueIQ</strong> · Queue Intelligence Platform<br>
+  Built for enterprise operations · Powered by AI
 </div>

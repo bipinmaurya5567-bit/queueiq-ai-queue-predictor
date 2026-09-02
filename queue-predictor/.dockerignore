@@ -1,0 +1,24 @@
+# Secrets — excluded from Docker image
+.env
+.env.local
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# YOLO weights — auto-downloaded at runtime, very large
+*.pt
+*.onnx
+*.bin
+
+# Dev artifacts
+venv/
+.venv/
+.git/
+.idea/
+.vscode/
+*.swp
+*~

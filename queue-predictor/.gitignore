@@ -1,6 +1,10 @@
 # ── Secrets — NEVER commit these ────────────────────────────────────────────
 .env
+.env.local
+.env.production
+.env.development
 *.env
+!.env.example
 .streamlit/secrets.toml
 
 # ── Python ───────────────────────────────────────────────────────────────────
@@ -20,18 +24,19 @@ venv/
 .venv/
 env/
 .env/
+virtualenv/
 
-# ── YOLO model weights (large — auto-downloaded on first run) ────────────────
+# ── YOLO model weights (large — auto-downloaded on first run) ─────────────────
 *.pt
 *.onnx
 *.bin
 
-# ── Large binaries ───────────────────────────────────────────────────────────
+# ── Large binaries / uploads ─────────────────────────────────────────────────
 *.zip
+*.mp4
+*.avi
+*.mov
 ngrok*
-
-# ── Streamlit local cache / config ──────────────────────────────────────────
-.streamlit/
 
 # ── OS artefacts ─────────────────────────────────────────────────────────────
 .DS_Store
@@ -46,7 +51,15 @@ ehthumbs.db
 *.swo
 *~
 
-# ── Scratch / one-off dev scripts (underscore prefix convention) ─────────────
+# ── Vercel (in case of future migration) ─────────────────────────────────────
+.vercel
+
+# ── Streamlit local caches (NOT config.toml — that is committed) ─────────────
+.streamlit/cache/
+# Note: .streamlit/config.toml is intentionally committed (no secrets)
+# Note: .streamlit/secrets.toml is intentionally excluded (see line 8)
+
+# ── Scratch / one-off dev scripts ────────────────────────────────────────────
 _*.py
 _*.txt
 full_audit.py
@@ -58,3 +71,6 @@ cf_output.txt
 .pytest_cache/
 .coverage
 htmlcov/
+
+# ── Deployment artifacts ──────────────────────────────────────────────────────
+.railway/
